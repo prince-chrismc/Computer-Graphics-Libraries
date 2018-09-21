@@ -24,14 +24,14 @@ README.md
 # mark headers as headers...
 SET_SOURCE_FILES_PROPERTIES( ${CGL_HEADERS} PROPERTIES HEADER_FILE_ONLY TRUE )
 # append to sources so that dependency checks work on headers
-LIST(APPEND CLI_PARSER_SOURCES ${CGL_HEADERS})
+LIST(APPEND CGL_SOURCES ${CGL_HEADERS})
 
 # OS and compiler checks.
 if(UNIX)
     # linux / normal unix
     add_definitions(-D_LINUX)
     set(CMAKE_CXX_STANDARD 17)
-    if(SIMPLE_SOCKET_DEP_ONLY)
+    if(CGL_DEP_ONLY)
        if(CMAKE_BUILD_TYPE MATCHES Debug)
          message("Building 'Debug' configuration.")
        elseif(CMAKE_BUILD_TYPE MATCHES Release)
