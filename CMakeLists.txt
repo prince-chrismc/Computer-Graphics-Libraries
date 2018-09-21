@@ -85,7 +85,7 @@ else()
     ADD_LIBRARY(Computer-Graphics-Libraries STATIC ${CGL_SOURCES} ${DATA_FILE})
 endif()
 
-SET(PROJECT_LIBS "${PROJECT_LIBS} glew32s glfw glm")
+SET(PROJECT_LIBS "glew32s glfw glm")
 TARGET_LINK_LIBRARIES(Computer-Graphics-Libraries ${PROJECT_LIBS})
 target_include_directories(Computer-Graphics-Libraries PRIVATE
     glew-cmake/include
