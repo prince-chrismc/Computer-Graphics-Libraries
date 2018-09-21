@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(Computer-Graphics-Libraries)
+project(cg-lib)
 
 # set up versioning.
 set(BUILD_MAJOR "0")
@@ -72,14 +72,14 @@ OPTION(CGL_DEP_ONLY "Build for use inside other CMake projects as dependency." O
 
 # make the lib
 if(CGL_DEP_ONLY)
-    ADD_LIBRARY(Computer-Graphics-Libraries STATIC EXCLUDE_FROM_ALL ${CGL_SOURCES} ${DATA_FILE})
+    ADD_LIBRARY(cg-lib STATIC EXCLUDE_FROM_ALL ${CGL_SOURCES} ${DATA_FILE})
 else()
-    ADD_LIBRARY(Computer-Graphics-Libraries STATIC ${CGL_SOURCES} ${DATA_FILE})
+    ADD_LIBRARY(cg-lib STATIC ${CGL_SOURCES} ${DATA_FILE})
 endif()
 
 SET(PROJECT_LIBS "glew32s glfw glm")
-TARGET_LINK_LIBRARIES(Computer-Graphics-Libraries ${PROJECT_LIBS})
-target_include_directories(Computer-Graphics-Libraries PRIVATE
+TARGET_LINK_LIBRARIES(cg-lib ${PROJECT_LIBS})
+target_include_directories(cg-lib PRIVATE
     glew-cmake/include
     glfw/include
     glm
@@ -87,9 +87,9 @@ target_include_directories(Computer-Graphics-Libraries PRIVATE
 
 # install into configured prefix
 if(NOT CGL_DEP_ONLY)
-    install(TARGETS Computer-Graphics-Libraries ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
+    install(TARGETS cg-lib ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
     install(FILES ${CGL_HEADERS} DESTINATION include)
 endif()
 
-set_target_properties(Computer-Graphics-Libraries PROPERTIES VERSION ${BUILD_VERSION} SOVERSION ${BUILD_MAJOR})
+set_target_properties(cg-lib PROPERTIES VERSION ${BUILD_VERSION} SOVERSION ${BUILD_MAJOR})
 
