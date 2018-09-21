@@ -21,26 +21,15 @@ set(DATA_FILE
 README.md
 )
 
+find_package (OpenGL REQUIRED)
+find_package (GLM REQUIRED)
 
-find_package(GLM REQUIRED)
-if (GLEW_FOUND)
-    include_directories(${GLM_INCLUDE_DIRS})
-    link_libraries(${GLM_LIBRARIES})
-endif()
+add_subdirectory( "glew/build/cmake" )
 
-find_package(GLFW REQUIRED)
-if (GLEW_FOUND)
-    include_directories(${GLFW_INCLUDE_DIRS})
-    link_libraries(${GLFW_LIBRARIES})
-endif()
-
-
-find_package(GLEW REQUIRED)
-if (GLEW_FOUND)
-    include_directories(${GLEW_INCLUDE_DIRS})
-    link_libraries(${GLEW_LIBRARIES})
-endif()
-
+set( GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE )
+set( GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE )
+set( GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE )
+add_subdirectory( "glfw" )
 
 # mark headers as headers...
 SET_SOURCE_FILES_PROPERTIES( ${CGL_HEADERS} PROPERTIES HEADER_FILE_ONLY TRUE )
