@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(Computer-Graphics-Libraries)
+project(Computer-Graphics-Libraries C CXX)
+enable_language(CXX) # until I add sources
 
 # set up versioning.
 set(BUILD_MAJOR "0")
@@ -10,11 +11,11 @@ set(BUILD_VERSION ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_VERSION})
 include_directories(src)
 
 SET(CGL_HEADERS
-
+src/Linked.h
 )
 
 SET(CGL_SOURCES
-
+src/Linked.cpp
 )
 
 set(DATA_FILE
@@ -22,18 +23,20 @@ README.md
 )
 
 find_package (OpenGL REQUIRED)
-find_package (GLM REQUIRED)
-find_package(GLEW 2.1 REQUIRED)
-
-if (GLEW_FOUND)
-    include_directories(${GLEW_INCLUDE_DIRS})
-    link_libraries(${GLEW_LIBRARIES})
-endif()
+add_subdirectory( "glm" )
 
 set( GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE )
 set( GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE )
 set( GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE )
+
 add_subdirectory( "glfw" )
+
+set( glew-cmake_BUILD_SHARED OFF CACHE BOOL "" FORCE )
+set( glew-cmake_BUILD_SINGLE_CONTEXT OFF CACHE BOOL "" FORCE )
+set( glew-cmake_BUILD_MULTI_CONTEXT OFF CACHE BOOL "" FORCE )
+
+add_subdirectory( "glew-cmake" )
+
 
 # mark headers as headers...
 SET_SOURCE_FILES_PROPERTIES( ${CGL_HEADERS} PROPERTIES HEADER_FILE_ONLY TRUE )
