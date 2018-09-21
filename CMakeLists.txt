@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(Computer-Graphics-Libraries C CXX)
-enable_language(CXX) # until I add sources
+project(Computer-Graphics-Libraries)
 
 # set up versioning.
 set(BUILD_MAJOR "0")
@@ -23,20 +22,19 @@ README.md
 )
 
 find_package (OpenGL REQUIRED)
+
+set( GLM_TEST_ENABLE OFF CACHE BOOL "" FORCE )
 add_subdirectory( "glm" )
 
 set( GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE )
 set( GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE )
 set( GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE )
-
 add_subdirectory( "glfw" )
 
 set( glew-cmake_BUILD_SHARED OFF CACHE BOOL "" FORCE )
 set( glew-cmake_BUILD_SINGLE_CONTEXT OFF CACHE BOOL "" FORCE )
 set( glew-cmake_BUILD_MULTI_CONTEXT OFF CACHE BOOL "" FORCE )
-
 add_subdirectory( "glew-cmake" )
-
 
 # mark headers as headers...
 SET_SOURCE_FILES_PROPERTIES( ${CGL_HEADERS} PROPERTIES HEADER_FILE_ONLY TRUE )
