@@ -23,8 +23,12 @@ README.md
 
 find_package (OpenGL REQUIRED)
 find_package (GLM REQUIRED)
+find_package(GLEW 2.1 REQUIRED)
 
-add_subdirectory( "glew/build/cmake" )
+if (GLEW_FOUND)
+    include_directories(${GLEW_INCLUDE_DIRS})
+    link_libraries(${GLEW_LIBRARIES})
+endif()
 
 set( GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE )
 set( GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE )
