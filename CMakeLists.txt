@@ -21,6 +21,27 @@ set(DATA_FILE
 README.md
 )
 
+
+find_package(GLM REQUIRED)
+if (GLEW_FOUND)
+    include_directories(${GLM_INCLUDE_DIRS})
+    link_libraries(${GLM_LIBRARIES})
+endif()
+
+find_package(GLFW REQUIRED)
+if (GLEW_FOUND)
+    include_directories(${GLFW_INCLUDE_DIRS})
+    link_libraries(${GLFW_LIBRARIES})
+endif()
+
+
+find_package(GLEW REQUIRED)
+if (GLEW_FOUND)
+    include_directories(${GLEW_INCLUDE_DIRS})
+    link_libraries(${GLEW_LIBRARIES})
+endif()
+
+
 # mark headers as headers...
 SET_SOURCE_FILES_PROPERTIES( ${CGL_HEADERS} PROPERTIES HEADER_FILE_ONLY TRUE )
 # append to sources so that dependency checks work on headers
