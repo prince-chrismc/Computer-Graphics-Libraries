@@ -9,17 +9,9 @@ set(BUILD_VERSION ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_VERSION})
 
 include_directories(src)
 
-SET(CGL_HEADERS
-src/Linked.h
-)
-
-SET(CGL_SOURCES
-src/Linked.cpp
-)
-
-set(DATA_FILE
-README.md
-)
+FILE(GLOB CGL_HEADERS "src/*.h")
+FILE(GLOB CGL_SOURCES "src/*.cpp")
+set(DATA_FILE README.md )
 
 find_package (OpenGL REQUIRED)
 
