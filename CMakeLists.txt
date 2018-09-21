@@ -90,7 +90,7 @@ TARGET_LINK_LIBRARIES(Computer-Graphics-Libraries ${PROJECT_LIBS})
 target_include_directories(Computer-Graphics-Libraries PRIVATE
     glew-cmake/include
     glfw/include
-    glm/include
+    glm
 )
 
 # install into configured prefix
