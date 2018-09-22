@@ -34,6 +34,7 @@ SOFTWARE.
 
 #include <vector>
 #include <mutex>
+#include <memory>
 
 class GlfwWindow : public IWindow
 {
