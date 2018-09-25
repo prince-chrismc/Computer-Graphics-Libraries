@@ -43,7 +43,8 @@ Shader::IShader::IShader(const std::string& rel_path) : m_Status(false)
    else
    {
       std::cout << "Impossible to open " << rel_path.c_str() << ". Are you in the right directory ?" << std::endl;
-      std::getline(std::cin, std::string());
+      std::string input;
+      std::getline(std::cin, input);
    }
 }
 
