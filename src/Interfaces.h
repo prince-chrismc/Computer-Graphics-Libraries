@@ -30,7 +30,7 @@ SOFTWARE.
 
 namespace Shader
 {
-   class IShader abstract
+   class IShader
    {
       public:
          IShader(const std::string& rel_path);
@@ -47,7 +47,7 @@ GLuint GetId() const { return m_Id; }
          std::string m_Code;
    };
 
-   class IProgram abstract
+   class IProgram
    {
       public:
          IProgram() : m_Status(false), m_ShaderCounter(0) { m_ProgramId = glCreateProgram(); }
