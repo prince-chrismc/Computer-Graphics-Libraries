@@ -34,7 +34,7 @@ public:
    IWindow(const char* title, const int& width, const int& height);
    IWindow(const char* title) : IWindow(title, DEFAULT_WIDTH, DEFAULT_HEIGHT) {}
 
-   constexpr bool IsValid() const { return m_Window != nullptr; }          // Make sure windows exists
+   bool IsValid() const { return m_Window != nullptr; }          // Make sure windows exists
    void NextBuffer() const { glfwSwapBuffers(m_Window); }                  // Swap the screen buffers
    bool ShouldClose() const { return glfwWindowShouldClose(m_Window); }    // window should close
    void CloseWindow() const { glfwSetWindowShouldClose(m_Window, GLFW_TRUE); }
