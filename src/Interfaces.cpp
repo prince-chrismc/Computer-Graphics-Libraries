@@ -49,10 +49,10 @@ Shader::IShader::IShader(const std::string& rel_path) : m_Status(false)
 
 bool Shader::IProgram::Link(IShader* vertex, IShader* frag)
 {
-   if (vertex->m_Status)
+   if (vertex)
       m_Status = AddShader(vertex);
 
-   if (frag->m_Status && m_Status)
+   if (frag && m_Status)
       m_Status = AddShader(frag);
 
    // Now lets link the program
@@ -77,7 +77,7 @@ bool Shader::IProgram::Link(IShader* vertex, IShader* frag)
 
 bool Shader::IProgram::AddShader(IShader * shader)
 {
-   glAttachShader(m_ProgramId, shader->m_Id);
+   glAttachShader(m_ProgramId, shader->GetId());
 
    GLint success;
    glGetProgramiv(m_ProgramId, GL_ATTACHED_SHADERS, &success);
