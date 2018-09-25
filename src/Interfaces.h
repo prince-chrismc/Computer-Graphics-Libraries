@@ -32,12 +32,12 @@ namespace Shader
 {
    class IShader abstract
    {
-      friend class IProgram;
       public:
          IShader(const std::string& rel_path);
          ~IShader() { glDeleteShader(m_Id); }
 
-         bool operator()() const { return m_Status; }
+         explict bool operator()() const { return m_Status; }
+GLuint GetId() const { return m_Id; }
 
       protected:
          virtual void Compile() = 0;
@@ -56,8 +56,8 @@ namespace Shader
          bool Link(IShader* vertex, IShader* frag);
          void Activate() const { glUseProgram(m_ProgramId); }
 
-         bool operator()() const { return m_Status; }
-
+         explict bool operator()() const { return m_Status; }
+         
          virtual GLuint GetUniformLocation(const char* shader_obj) const { return glGetUniformLocation(m_ProgramId, shader_obj); }
          virtual GLuint GetAttributeLocation(const char* shader_obj) const { return glGetAttribLocation(m_ProgramId, shader_obj); }
 
