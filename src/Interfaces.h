@@ -36,7 +36,7 @@ namespace Shader
          IShader(const std::string& rel_path);
          ~IShader() { glDeleteShader(m_Id); }
 
-         explict bool operator()() const { return m_Status; }
+         bool operator()() const { return m_Status; }
 GLuint GetId() const { return m_Id; }
 
       protected:
@@ -56,7 +56,7 @@ GLuint GetId() const { return m_Id; }
          bool Link(IShader* vertex, IShader* frag);
          void Activate() const { glUseProgram(m_ProgramId); }
 
-         explict bool operator()() const { return m_Status; }
+         bool operator()() const { return m_Status; }
          
          virtual GLuint GetUniformLocation(const char* shader_obj) const { return glGetUniformLocation(m_ProgramId, shader_obj); }
          virtual GLuint GetAttributeLocation(const char* shader_obj) const { return glGetAttribLocation(m_ProgramId, shader_obj); }
