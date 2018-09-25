@@ -30,6 +30,7 @@ SOFTWARE.
 #define SHADER_PROGRAM // To prevent inclusion of both Singleton and Multiple implementations
 
 #include <mutex>
+#include <memory>
 #include <map>
 
 namespace Shader
