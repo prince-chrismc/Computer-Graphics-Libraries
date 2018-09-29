@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 project(cg-lib)
 
 # set up versioning.
-set(BUILD_MAJOR "0")
+set(BUILD_MAJOR "1")
 set(BUILD_MINOR "0")
-set(BUILD_VERSION "0")
+set(BUILD_VERSION "1")
 set(BUILD_VERSION ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_VERSION})
 
 include_directories(src)
@@ -24,7 +24,7 @@ set( GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE )
 add_subdirectory( "glfw" )
 
 set( glew-cmake_BUILD_SHARED OFF CACHE BOOL "" FORCE )
-set( glew-cmake_BUILD_SINGLE_CONTEXT OFF CACHE BOOL "" FORCE )
+set( glew-cmake_BUILD_SINGLE_CONTEXT ON CACHE BOOL "" FORCE )
 set( glew-cmake_BUILD_MULTI_CONTEXT OFF CACHE BOOL "" FORCE )
 add_subdirectory( "glew-cmake" )
 
@@ -77,7 +77,7 @@ else()
     ADD_LIBRARY(cg-lib STATIC ${CGL_SOURCES} ${DATA_FILE})
 endif()
 
-SET(PROJECT_LIBS "glew32s glfw glm")
+SET(PROJECT_LIBS libglew_static glfw glm_static)
 TARGET_LINK_LIBRARIES(cg-lib ${PROJECT_LIBS})
 target_include_directories(cg-lib PRIVATE
     glew-cmake/include
