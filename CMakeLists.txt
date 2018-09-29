@@ -13,6 +13,9 @@ FILE(GLOB CGL_HEADERS "src/*.h")
 FILE(GLOB CGL_SOURCES "src/*.cpp")
 set(DATA_FILE README.md )
 
+set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
 find_package (OpenGL REQUIRED)
 
 set( GLM_TEST_ENABLE OFF CACHE BOOL "" FORCE )
@@ -23,9 +26,7 @@ set( GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE )
 set( GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE )
 add_subdirectory( "glfw" )
 
-set( glew-cmake_BUILD_SHARED OFF CACHE BOOL "" FORCE )
-set( glew-cmake_BUILD_SINGLE_CONTEXT ON CACHE BOOL "" FORCE )
-set( glew-cmake_BUILD_MULTI_CONTEXT OFF CACHE BOOL "" FORCE )
+set( glew-cmake_BUILD_STATIC OFF CACHE BOOL "" FORCE )
 add_subdirectory( "glew-cmake" )
 
 # mark headers as headers...
@@ -77,12 +78,13 @@ else()
     ADD_LIBRARY(cg-lib STATIC ${CGL_SOURCES} ${DATA_FILE})
 endif()
 
-SET(PROJECT_LIBS libglew_static glfw glm_static)
+SET(PROJECT_LIBS libglew_shared glfw glm_static)
 TARGET_LINK_LIBRARIES(cg-lib ${PROJECT_LIBS})
-target_include_directories(cg-lib PRIVATE
+target_include_directories(cg-lib PUBLIC
     glew-cmake/include
     glfw/include
-    glm
+    glm/
+	src/
 )
 
 # install into configured prefix

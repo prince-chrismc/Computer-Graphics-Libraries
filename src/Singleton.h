@@ -29,7 +29,7 @@ SOFTWARE.
 #ifndef WINDOW_PROGRAM
 #define WINDOW_PROGRAM // To prevent inclusion of both Singleton and Multiple implementations
 
-#include<mutex>
+#include <mutex>
 #include <memory>
 
 class GlfwWindow : public IWindow
