@@ -44,9 +44,8 @@ IWindow::IWindow(const char* title, const int& width, const int& height) : m_Win
    m_Window = glfwCreateWindow(width, height, title, nullptr, nullptr);
    if (m_Window == nullptr)
    {
-      std::cout << "Failed to create GLFW window" << std::endl;
       glfwTerminate();
-      return;
+      throw WindowException();
    }
 
    // select new window

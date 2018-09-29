@@ -26,3 +26,12 @@ SOFTWARE.
 
 std::once_flag Shader::Linked::s_Flag;
 std::shared_ptr<Shader::Linked> Shader::Linked::s_Instance;
+
+void Shader::Linked::Init(IShader* vertex, IShader* frag)
+{
+   Link( vertex, frag );
+   Activate();
+
+   if( !operator()() )
+      throw ShaderException( "Unable to initalize shader program " );
+}

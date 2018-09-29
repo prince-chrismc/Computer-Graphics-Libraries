@@ -23,7 +23,6 @@ SOFTWARE.
 */
 
 #include "Shaders.h"
-#include <iostream>
 
 void Shader::Vertex::Compile()
 {
@@ -35,13 +34,14 @@ void Shader::Vertex::Compile()
 
       // Check for compile time errors
       GLint success;
-      GLchar info_log[512];
       glGetShaderiv(m_Id, GL_COMPILE_STATUS, &success);
       if (!success)
       {
-         glGetShaderInfoLog(m_Id, 512, NULL, info_log);
-         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << info_log << std::endl;
          m_Status = false;
+         std::string log_buffer( 512, ' ' );
+         glGetProgramInfoLog( m_Id, 512, NULL, log_buffer.data() );
+
+         throw ShaderException( "Vertex Shader Compilation failed. Due to the following:\r\n" + log_buffer );
       }
    }
 }
@@ -56,13 +56,14 @@ void Shader::Fragment::Compile()
 
       // Check for compile time errors
       GLint success;
-      GLchar info_log[512];
       glGetShaderiv(m_Id, GL_COMPILE_STATUS, &success);
       if (!success)
       {
-         glGetShaderInfoLog(m_Id, 512, NULL, info_log);
-         std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << info_log << std::endl;
          m_Status = false;
+         std::string log_buffer( 512, ' ' );
+         glGetProgramInfoLog( m_Id, 512, NULL, log_buffer.data() );
+
+         throw ShaderException( "Fragment Shader Compilation failed. Due to the following:\r\n" + log_buffer );
       }
    }
 }

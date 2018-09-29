@@ -31,21 +31,21 @@ namespace Shader
    class Vertex : public IShader
    {
       public:
-         Vertex(const std::string& rel_path) : IShader(rel_path) { m_Id = glCreateShader(GL_VERTEX_SHADER); Compile(); }
+         Vertex(const std::string& rel_path) : IShader(rel_path) { m_Id = glCreateShader(GL_VERTEX_SHADER); Vertex::Compile(); }
          Vertex(const char* rel_path) : Vertex(std::string(rel_path)) {}
 
       private:
-         void Compile();
+         void Compile() override;
    };
 
    class Fragment : public IShader
    {
       public:
-         Fragment(const std::string& rel_path) : IShader(rel_path) { m_Id = glCreateShader(GL_FRAGMENT_SHADER); Compile(); }
+         Fragment(const std::string& rel_path) : IShader(rel_path) { m_Id = glCreateShader(GL_FRAGMENT_SHADER); Fragment::Compile(); }
          Fragment(const char* rel_path) : Fragment(std::string(rel_path)) {}
 
       private:
-         void Compile();
+         void Compile() override;
    };
 }
 

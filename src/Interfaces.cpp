@@ -23,66 +23,60 @@ SOFTWARE.
 */
 
 #include "Interfaces.h"
-#include <iostream>
 #include <fstream>
 
-Shader::IShader::IShader(const std::string& rel_path) : m_Status(false)
+Shader::IShader::IShader( const std::string& rel_path ) : m_Id( 0 ), m_Status( false )
 {
-   std::ifstream glsl_file(rel_path, std::ios::in);
+   std::ifstream glsl_file( rel_path.data(), std::ios::in );
 
-   if (glsl_file.is_open())
+   if( glsl_file.is_open() )
    {
-      std::string line_buffer = "";
-      while (std::getline(glsl_file, line_buffer))
-      {
-         m_Code += "\n" + line_buffer;
-      }
+      glsl_file >> m_Code;
       glsl_file.close();
       m_Status = true;
    }
    else
    {
-      std::cout << "Impossible to open " << rel_path.c_str() << ". Are you in the right directory ?" << std::endl;
-      std::string input;
-      std::getline(std::cin, input);
+      throw ShaderException( "Impossible to open " + rel_path + ". Are you in the right directory ?" );
    }
 }
 
-bool Shader::IProgram::Link(IShader* vertex, IShader* frag)
+bool Shader::IProgram::Link( IShader* vertex, IShader* frag )
 {
-   if (vertex)
-      m_Status = AddShader(vertex);
-
-   if (frag && m_Status)
-      m_Status = AddShader(frag);
+   if( vertex && frag )
+      m_Status = AddShader( vertex ) && AddShader( frag );
 
    // Now lets link the program
-   if (m_Status)
+   if( m_Status )
    {
-      glLinkProgram(m_ProgramId);
+      glLinkProgram( m_ProgramId );
 
       // Check for linking errors
       GLint success;
-      GLchar log_buffer[512];
-      glGetProgramiv(m_ProgramId, GL_LINK_STATUS, &success);
-      if (!success)
+      glGetProgramiv( m_ProgramId, GL_LINK_STATUS, &success );
+
+      if( !success )
       {
-         glGetProgramInfoLog(m_ProgramId, 512, NULL, log_buffer);
-         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << log_buffer << std::endl;
          m_Status = false;
+         std::string log_buffer( 512, ' ' );
+         glGetProgramInfoLog( m_ProgramId, 512, NULL, log_buffer.data() );
+
+         throw ShaderException( "Program linking failed. Due to the following:\r\n" + log_buffer );
       }
    }
 
    return m_Status;
 }
 
-bool Shader::IProgram::AddShader(IShader * shader)
+bool Shader::IProgram::AddShader( IShader * shader )
 {
-   glAttachShader(m_ProgramId, shader->GetId());
+   if( ! (*shader)() ) throw ShaderException( "Unable to ass shader which is not valid!" );
 
-   GLint success;
-   glGetProgramiv(m_ProgramId, GL_ATTACHED_SHADERS, &success);
-   if (success == m_ShaderCounter + 1)
+   glAttachShader( m_ProgramId, shader->GetId() );
+
+   GLint attached_shaders;
+   glGetProgramiv( m_ProgramId, GL_ATTACHED_SHADERS, &attached_shaders );
+   if( attached_shaders == m_ShaderCounter + 1 )
    {
       m_ShaderCounter += 1;
       return true;

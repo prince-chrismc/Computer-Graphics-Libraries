@@ -32,45 +32,56 @@ namespace Shader
 {
    class IShader
    {
-      public:
-         IShader(const std::string& rel_path);
-         ~IShader() { glDeleteShader(m_Id); }
+   public:
+      explicit IShader( const std::string& rel_path );
+      virtual ~IShader() { glDeleteShader( m_Id ); }
 
-         bool operator()() const { return m_Status; }
-GLuint GetId() const { return m_Id; }
+      bool operator()() const { return m_Status; }
+      GLuint GetId() const { return m_Id; }
 
-      protected:
-         virtual void Compile() = 0;
+   protected:
+      virtual void Compile() = 0;
 
-         GLuint m_Id;
-         bool m_Status;
-         std::string m_Code;
+      GLuint m_Id;
+      bool m_Status;
+      std::string m_Code;
    };
 
    class IProgram
    {
-      public:
-         IProgram() : m_Status(false), m_ShaderCounter(0) { m_ProgramId = glCreateProgram(); }
-         ~IProgram() { glDeleteProgram(m_ProgramId); }
+   public:
+      IProgram() : m_Status( false ), m_ShaderCounter( 0 ) { m_ProgramId = glCreateProgram(); }
+      virtual ~IProgram() { glDeleteProgram( m_ProgramId ); }
 
-         bool Link(IShader* vertex, IShader* frag);
-         void Activate() const { glUseProgram(m_ProgramId); }
+      bool Link( IShader* vertex, IShader* frag );
+      void Activate() const { glUseProgram( m_ProgramId ); }
 
-         bool operator()() const { return m_Status; }
-         
-         virtual GLuint GetUniformLocation(const char* shader_obj) const { return glGetUniformLocation(m_ProgramId, shader_obj); }
-         virtual GLuint GetAttributeLocation(const char* shader_obj) const { return glGetAttribLocation(m_ProgramId, shader_obj); }
+      virtual bool operator()() const { return m_Status; }
 
-         void SetUniformInt(const char* shader_obj, const GLint& i) const { glUniform1i(GetUniformLocation(shader_obj), i); }
-         void SetUniformMat4(const char* shader_obj, const glm::mat4& mat) const { glUniformMatrix4fv(GetUniformLocation(shader_obj), 1, GL_FALSE, glm::value_ptr(mat)); }
-         void SetUniformVec3(const char* shader_obj, const glm::vec3& vec) const { glUniform3fv(GetUniformLocation(shader_obj), 1, glm::value_ptr(vec)); }
+      virtual GLuint GetUniformLocation( const char* shader_obj ) const { return glGetUniformLocation( m_ProgramId, shader_obj ); }
+      virtual GLuint GetAttributeLocation( const char* shader_obj ) const { return glGetAttribLocation( m_ProgramId, shader_obj ); }
 
-      private:
-         GLuint m_ProgramId;
-         bool m_Status;
-         unsigned int m_ShaderCounter;
+      void SetUniformInt( const char* shader_obj, const GLint& i ) const { glUniform1i( GetUniformLocation( shader_obj ), i ); }
+      void SetUniformMat4( const char* shader_obj, const glm::mat4& mat ) const { glUniformMatrix4fv( GetUniformLocation( shader_obj ), 1, GL_FALSE, glm::value_ptr( mat ) ); }
+      void SetUniformVec3( const char* shader_obj, const glm::vec3& vec ) const { glUniform3fv( GetUniformLocation( shader_obj ), 1, glm::value_ptr( vec ) ); }
 
-         bool AddShader(IShader* shader);
+   private:
+      GLuint m_ProgramId;
+      bool m_Status;
+      GLint m_ShaderCounter;
+
+      bool AddShader( IShader* shader );
+   };
+
+   class ShaderException : std::exception
+   {
+   public:
+      ShaderException( const std::string& err_msg ) : m_What( err_msg ) {}
+
+      char const* what() const override { return m_What.c_str(); }
+
+   private:
+      const std::string m_What;
    };
 }
 

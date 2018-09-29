@@ -60,3 +60,8 @@ protected:
    void UpdateFromResize(const int& width, const int& height);
 };
 
+class WindowException : std::exception
+{
+   const char* what() const override { return "Failed to create a new GLFW window!"; }
+};
+

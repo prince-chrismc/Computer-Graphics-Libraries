@@ -37,29 +37,31 @@ namespace Shader
    // A singleton shader program access able everywhere
    class Linked final : protected IProgram
    {
-      public:
-         ~Linked() = default;
-         Linked(const Linked&) = delete;
-         Linked& operator=(const Linked&) = delete;
+   public:
+      ~Linked() = default;
+      Linked( const Linked& ) = delete;
+      Linked( const Linked&& ) = delete;
+      Linked& operator=( const Linked& ) = delete;
+      Linked& operator=( const Linked&& ) = delete;
 
-         static std::shared_ptr<Linked> GetInstance() { std::call_once(s_Flag, []() { s_Instance.reset(new Linked()); }); return s_Instance; }
+      static std::shared_ptr<Linked> GetInstance() { std::call_once( s_Flag, []() { s_Instance.reset( new Linked() ); } ); return s_Instance; }
 
-         bool Init(IShader* vertex, IShader* frag) { Link(vertex, frag); Activate(); return IProgram::operator()(); }
+      void Init( IShader* vertex, IShader* frag );
 
-         explicit operator bool() const { return IProgram::operator()(); }
+      explicit operator bool() const { return IProgram::operator()(); }
 
-         GLuint GetUniformLocation(const char* shader_obj) const { return IProgram::GetUniformLocation(shader_obj); }
-         GLuint GetAttributeLocation(const char* shader_obj) const { return IProgram::GetAttributeLocation(shader_obj); }
+      GLuint GetUniformLocation( const char* shader_obj ) const override { return IProgram::GetUniformLocation( shader_obj ); }
+      GLuint GetAttributeLocation( const char* shader_obj ) const override { return IProgram::GetAttributeLocation( shader_obj ); }
 
-         void SetUniformInt(const char* shader_obj, const GLint& i) const { glUniform1i(GetUniformLocation(shader_obj), i); }
-         void SetUniformMat4(const char* shader_obj, const glm::mat4& mat) const { glUniformMatrix4fv(GetUniformLocation(shader_obj), 1, GL_FALSE, glm::value_ptr(mat)); }
-         void SetUniformVec3(const char* shader_obj, const glm::vec3& vec) const { glUniform3fv(GetUniformLocation(shader_obj), 1, glm::value_ptr(vec)); }
+      void SetUniformInt( const char* shader_obj, const GLint& i ) const { glUniform1i( GetUniformLocation( shader_obj ), i ); }
+      void SetUniformMat4( const char* shader_obj, const glm::mat4& mat ) const { glUniformMatrix4fv( GetUniformLocation( shader_obj ), 1, GL_FALSE, glm::value_ptr( mat ) ); }
+      void SetUniformVec3( const char* shader_obj, const glm::vec3& vec ) const { glUniform3fv( GetUniformLocation( shader_obj ), 1, glm::value_ptr( vec ) ); }
 
-      private:
-         Linked() = default;
+   private:
+      Linked() = default;
 
-         static std::once_flag s_Flag;
-         static std::shared_ptr<Linked> s_Instance;
+      static std::once_flag s_Flag;
+      static std::shared_ptr<Linked> s_Instance;
    };
 }
 
