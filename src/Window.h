@@ -62,6 +62,6 @@ protected:
 
 class WindowException : std::exception
 {
-   const char* what() const override { return "Failed to create a new GLFW window!"; }
+   const char* what() const noexcept override { return "Failed to create a new GLFW window!"; }
 };
 

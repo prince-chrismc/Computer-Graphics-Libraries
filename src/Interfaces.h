@@ -78,7 +78,7 @@ namespace Shader
    public:
       ShaderException( const std::string& err_msg ) : m_What( err_msg ) {}
 
-      char const* what() const override { return m_What.c_str(); }
+      char const* what() const noexcept override { return m_What.c_str(); }
 
    private:
       const std::string m_What;
