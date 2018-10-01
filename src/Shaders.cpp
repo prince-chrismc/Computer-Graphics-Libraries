@@ -39,7 +39,7 @@ void Shader::Vertex::Compile()
       {
          m_Status = false;
          std::string log_buffer( 512, ' ' );
-         glGetProgramInfoLog( m_Id, 512, NULL, log_buffer.data() );
+         glGetProgramInfoLog( m_Id, 512, NULL, const_cast<char*>( log_buffer.data() ) );
 
          throw ShaderException( "Vertex Shader Compilation failed. Due to the following:\r\n" + log_buffer );
       }
@@ -61,7 +61,7 @@ void Shader::Fragment::Compile()
       {
          m_Status = false;
          std::string log_buffer( 512, ' ' );
-         glGetProgramInfoLog( m_Id, 512, NULL, log_buffer.data() );
+         glGetProgramInfoLog( m_Id, 512, NULL, const_cast<char*>( log_buffer.data() ) );
 
          throw ShaderException( "Fragment Shader Compilation failed. Due to the following:\r\n" + log_buffer );
       }

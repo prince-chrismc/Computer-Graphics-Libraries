@@ -27,7 +27,7 @@ SOFTWARE.
 
 Shader::IShader::IShader( const std::string& rel_path ) : m_Id( 0 ), m_Status( false )
 {
-   std::ifstream glsl_file( rel_path.data(), std::ios::in );
+   std::ifstream glsl_file( rel_path, std::ios::in );
 
    if( glsl_file.is_open() )
    {
@@ -59,7 +59,7 @@ bool Shader::IProgram::Link( IShader* vertex, IShader* frag )
       {
          m_Status = false;
          std::string log_buffer( 512, ' ' );
-         glGetProgramInfoLog( m_ProgramId, 512, NULL, log_buffer.data() );
+         glGetProgramInfoLog( m_ProgramId, 512, NULL, const_cast<char*>(log_buffer.data()) );
 
          throw ShaderException( "Program linking failed. Due to the following:\r\n" + log_buffer );
       }
@@ -70,7 +70,7 @@ bool Shader::IProgram::Link( IShader* vertex, IShader* frag )
 
 bool Shader::IProgram::AddShader( IShader * shader )
 {
-   if( ! (*shader)() ) throw ShaderException( "Unable to ass shader which is not valid!" );
+   if( ! (*shader)() ) throw ShaderException( "Unable to add shader which is not valid!" );
 
    glAttachShader( m_ProgramId, shader->GetId() );
 
