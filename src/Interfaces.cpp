@@ -31,7 +31,11 @@ Shader::IShader::IShader( const std::string& rel_path ) : m_Id( 0 ), m_Status( f
 
    if( glsl_file.is_open() )
    {
-      glsl_file >> m_Code;
+      std::string line_buffer;
+      while( std::getline( glsl_file, line_buffer ) )
+      {
+         m_Code += "\n" + line_buffer;
+      }
       glsl_file.close();
       m_Status = true;
    }
