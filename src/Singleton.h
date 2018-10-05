@@ -50,6 +50,8 @@ private:
 
    static std::once_flag s_Flag;
    static std::shared_ptr<GlfwWindow> s_Instance;
+
+   static void HandleResize( GLFWwindow* windows, int x, int y );
 };
 
 #else
