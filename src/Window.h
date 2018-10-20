@@ -31,21 +31,23 @@ SOFTWARE.
 class IWindow
 {
 public:
-   IWindow(const char* title, const int& width, const int& height);
-   IWindow(const char* title) : IWindow(title, DEFAULT_WIDTH, DEFAULT_HEIGHT) {}
+   IWindow( const char* title, const int& width, const int& height );
+   IWindow( const char* title ) : IWindow( title, DEFAULT_WIDTH, DEFAULT_HEIGHT ) {}
 
-   bool IsValid() const { return m_Window != nullptr; }          // Make sure windows exists
-   void NextBuffer() const { glfwSwapBuffers(m_Window); }                  // Swap the screen buffers
-   bool ShouldClose() const { return glfwWindowShouldClose(m_Window); }    // window should close
-   void CloseWindow() const { glfwSetWindowShouldClose(m_Window, GLFW_TRUE); }
+   bool IsValid() const { return m_Window != nullptr; }                       // Make sure windows exists
+   void NextBuffer() const { glfwSwapBuffers( m_Window ); }                   // Swap the screen buffers
+   bool ShouldClose() const { return glfwWindowShouldClose( m_Window ); }     // window should close
+   void CloseWindow() const { glfwSetWindowShouldClose( m_Window, GLFW_TRUE ); }
+   void SelectWindow() const { glfwMakeContextCurrent( m_Window ); }          // select new window in the current thread
+   static void FreeWindow() { glfwMakeContextCurrent( nullptr ); }            // frees windows in current thread for others to access
 
    const glm::mat4& GetProjectionMatrix() const { return m_Projection; }
 
    // Allow the required callback functions
-   GLFWkeyfun         SetKeyCallback(GLFWkeyfun cbfun) { return glfwSetKeyCallback(m_Window, cbfun); }
-   GLFWmousebuttonfun SetMouseButtonCallback(GLFWmousebuttonfun cbfun) { return glfwSetMouseButtonCallback(m_Window, cbfun); }
-   GLFWcursorposfun   SetCursorPosCallback(GLFWcursorposfun cbfun) { return glfwSetCursorPosCallback(m_Window, cbfun); }
-   GLFWwindowsizefun  SetWindowSizeCallback(GLFWwindowsizefun cbfun) { return glfwSetWindowSizeCallback(m_Window, cbfun); }
+   GLFWkeyfun         SetKeyCallback( GLFWkeyfun cbfun ) const { return glfwSetKeyCallback( m_Window, cbfun ); }
+   GLFWmousebuttonfun SetMouseButtonCallback( GLFWmousebuttonfun cbfun ) const { return glfwSetMouseButtonCallback( m_Window, cbfun ); }
+   GLFWcursorposfun   SetCursorPosCallback( GLFWcursorposfun cbfun ) const { return glfwSetCursorPosCallback( m_Window, cbfun ); }
+   GLFWwindowsizefun  SetWindowSizeCallback( GLFWwindowsizefun cbfun ) const { return glfwSetWindowSizeCallback( m_Window, cbfun ); }
 
    static void TriggerCallbacks() { glfwPollEvents(); }                    // For all windows, trigger callback for any pending event
 
@@ -57,7 +59,7 @@ protected:
 
    static std::once_flag s_InitFlag;
 
-   void UpdateFromResize(const int& width, const int& height);
+   void UpdateFromResize( const int& width, const int& height );
 };
 
 class WindowException : std::exception

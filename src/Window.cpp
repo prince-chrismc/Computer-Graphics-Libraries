@@ -48,10 +48,9 @@ IWindow::IWindow(const char* title, const int& width, const int& height) : m_Win
       throw WindowException();
    }
 
-   // select new window
-   glfwMakeContextCurrent(m_Window);
+   SelectWindow();
 
-   // get frame bug from GLFW notify GL and calc Projection Matrix
+   // get frame from GLFW notify GL and calc Projection Matrix
    {
       int width, height;
       glfwGetFramebufferSize(m_Window, &width, &height);
