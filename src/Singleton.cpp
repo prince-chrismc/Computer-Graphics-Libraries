@@ -29,15 +29,17 @@ std::shared_ptr<GlfwWindow> GlfwWindow::s_Instance = nullptr;
 
 std::shared_ptr<GlfwWindow> GlfwWindow::CreateInstance( const char * title, const int & width, const int & height )
 {
-   std::call_once( s_Flag, [ title, width, height ]() {
-      s_Instance.reset( new GlfwWindow( title, width, height ) ); } );
+   std::call_once( s_Flag, [ = ]() { s_Instance.reset( new GlfwWindow( title, width, height ) ); } );
 
-   s_Instance->SetWindowSizeCallback( &HandleResize );
+   if( s_Instance->SetWindowSizeCallback( &HandleResize ) != nullptr ) throw WindowException();
 
    return s_Instance;
 }
 
-void GlfwWindow::HandleResize( GLFWwindow * windows, int x, int y )
+void GlfwWindow::HandleResize( GLFWwindow* windows, int x, int y )
 {
+   if( s_Instance->m_Window != windows )
+      throw std::runtime_error("Called for window resize not owned by this instance!");
+
    s_Instance->UpdateFromResize( x, y );
 }
