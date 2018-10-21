@@ -27,6 +27,7 @@ set( GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE )
 add_subdirectory( "glfw" )
 
 set( glew-cmake_BUILD_STATIC OFF CACHE BOOL "" FORCE )
+set( glew-cmake_BUILD_MULTI_CONTEXT OFF CACHE BOOL "" FORCE )
 add_subdirectory( "glew-cmake" )
 
 # mark headers as headers...
